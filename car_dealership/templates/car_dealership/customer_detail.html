@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Customer Details</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f2027;
+      color: #fff;
+      display: flex;
+    }
+
+    /* Sidebar */
+    aside {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      backdrop-filter: blur(8px);
+    }
+
+    aside a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    aside a:hover {
+      color: #ff7f50;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff7f50;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 13px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      outline: none;
+    }
+
+    /* Main Content */
+    main {
+      margin-left: 270px;
+      padding: 40px;
+      flex: 1;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 32px;
+      color: #ff7f50;
+    }
+
+    .detail-card {
+      background: #ffffff;
+      color: #000;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 1000px;
+      padding: 30px;
+      display: flex;
+      gap: 40px;
+    }
+
+    .info-section {
+      flex: 1;
+    }
+
+    .photo-section img {
+      max-width: 250px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      font-size: 16px;
+    }
+
+    th {
+      color: #444;
+      width: 160px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: #ff7f50;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    .back-link:hover {
+      color: #ffa07a;
+    }
+    .edit-button {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: rgba(255, 127, 80, 0.2);
+    color: #ff7f50;
+    border: 2px solid #ff7f50;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-left: 20px;
+    }
+
+    .edit-button:hover {
+    background: #ff7f50;
+    color: #fff;
+    box-shadow: 0 0 10px #ff7f50;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside>
+    <div class="logo">SmartAuto</div>
+
+    <form method="GET" action="#">
+      <input type="text" name="search" placeholder="Search...">
+    </form>
+
+  <a href="{% url 'index' %}" style="color:{% if request.path == '/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Home</a>
+  <a href="{% url 'car_list' %}" style="color:{% if request.path == '/cars/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Cars</a>
+  <a href="{% url 'add_car' %}" style="color:{% if request.path == '/add_car/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Add Car</a>
+  <a href="{% url 'customer_list' %}" style="color:#fff; text-decoration:none; font-size:16px;">Customer List</a>
+  <a href="{% url 'add_customer' %}" style="color:{% if request.path == '/add_customer/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Add Customer</a>
+  <a href="#" style="color:#fff; text-decoration:none; font-size:16px;">Contact</a>
+  </aside>
+
+  <!-- Main Content -->
+  <main>
+    <h1>Customer Details</h1>
+    <a href="{% url 'edit_customer' customer.id %}" class="edit-button">✎ Edit</a>
+
+
+    <div class="detail-card">
+      <div class="info-section">
+        <table>
+          <tr><th>Name:</th><td>{{ customer.name }}</td></tr>
+          <tr><th>Gender:</th><td>{{ customer.gender }}</td></tr>
+          <tr><th>Car:</th><td>{{ customer.car }}</td></tr>
+          <tr><th>Date:</th><td>{{ customer.date }}</td></tr>
+          <tr><th>Email:</th><td>{{ customer.email }}</td></tr>
+          <tr><th>Contact:</th><td>{{ customer.contact }}</td></tr>
+          <tr><th>Status:</th><td>{{ customer.repair_status }}</td></tr>
+          <tr><th>Problem:</th><td>{{ customer.problem_description }}</td></tr>
+          <tr><th>Total Price:</th><td>{{ customer.estimated_cost }}</td></tr>
+
+        </table>
+      </div>
+
+      <div class="photo-section">
+        {% if customer.photo %}
+          <img src="{{ customer.photo.url }}" alt="Customer Photo">
+        {% else %}
+          <p>No photo uploaded.</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <a class="back-link" href="{% url 'customer_list' %}">← Back to Customer List</a>
+  </main>
+
+</body>
+</html>

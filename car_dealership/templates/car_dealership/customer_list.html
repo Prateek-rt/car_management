@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customer List</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      background: #0f2027;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    aside {
+      width: 250px;
+      background: rgba(0,0,0,0.4);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      backdrop-filter: blur(8px);
+      flex-shrink: 0;
+    }
+
+    aside div {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff7f50;
+      margin-bottom: 40px;
+    }
+
+    aside a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+      transition: color 0.3s;
+    }
+
+    aside a:hover {
+      color: #ff7f50;
+    }
+
+    .container {
+      flex: 1;
+      padding: 40px;
+      overflow-x: auto;
+    }
+
+    h1 {
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      color: #000;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+      border-bottom: 1px solid #ccc;
+    }
+
+    th {
+      background-color: #203a43;
+      color: #fff;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    a.add-link {
+      display: inline-block;
+      margin-top: 20px;
+      color: #ff7f50;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a.add-link:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      border-radius: 8px;
+    }
+
+    .filter-form {
+      margin-bottom: 25px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+   
+    .filter-form input,
+    .filter-form select {
+    padding: 8px;
+    border-radius: 6px;
+    border: none;
+    background-color: #2a3f4f;  /* Darker background */
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    }
+
+    .filter-form button {
+      padding: 8px 16px;
+      background: #ff7f50;
+      border: none;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .filter-form button:hover {
+      background-color: #ff5722;
+    }
+    .clear-button {
+    background: #777;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    text-align: center;
+    }
+    .clear-button:hover {
+    background: #666;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Navigation -->
+  <aside>
+    <div>SmartAuto</div>
+
+    <form method="GET" action="#" style="margin-bottom:10px;">
+      <input 
+        type="text" 
+        name="search" 
+        placeholder="Search..." 
+        style="width:90%; padding:8px 12px; border-radius:8px; border:none; background:rgba(255,255,255,0.1); color:#fff; font-size:13px; box-shadow:0 2px 6px rgba(0,0,0,0.2); outline:none;" />
+    </form>
+
+    <a href="{% url 'index' %}" style="color:{% if request.path == '/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Home</a>
+  <a href="{% url 'car_list' %}" style="color:{% if request.path == '/cars/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Cars</a>
+  <a href="{% url 'add_car' %}" style="color:{% if request.path == '/add_car/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Add Car</a>
+  <a href="{% url 'customer_list' %}" style="color:#fff; text-decoration:none; font-size:16px;">Customer List</a>
+  <a href="{% url 'add_customer' %}" style="color:{% if request.path == '/add_customer/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Add Customer</a>
+  <a href="#" style="color:#fff; text-decoration:none; font-size:16px;">Contact</a>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="container">
+    <a href="{% url 'add_customer' %}" class="add-link">➕ Add New Customer</a>
+
+    <h1>All Customers</h1>
+
+    <!-- Filter Form -->
+    <form method="get" class="filter-form">
+      <input type="text" name="name" placeholder="Filter by Name" value="{{ request.GET.name }}">
+      
+      <select name="gender">
+        <option value="">All Genders</option>
+        <option value="Male" {% if request.GET.gender == "Male" %}selected{% endif %}>Male</option>
+        <option value="Female" {% if request.GET.gender == "Female" %}selected{% endif %}>Female</option>
+      </select>
+
+      <input type="text" name="car" placeholder="Filter by Car" value="{{ request.GET.car }}">
+
+      <select name="repair_status">
+        <option value="">All Statuses</option>
+        <option value="Pending" {% if request.GET.repair_status == "Pending" %}selected{% endif %}>Pending</option>
+        <option value="Completed" {% if request.GET.repair_status == "Completed" %}selected{% endif %}>Completed</option>
+      </select>
+
+      <button type="submit">Apply Filters</button>
+      <a href="{% url 'customer_list' %}">
+        <button type="button" class="clear-button">Clear</button>
+      </a>
+    </form>
+
+    <!-- Customer Table -->
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Gender</th>
+        <th>Car</th>
+        <th>Date</th>
+        <th>Email</th>
+        <th>Contact</th>
+        <th>Status</th>
+        <th>Price</th>
+        <th>Photo</th>
+      </tr>
+      {% for c in customers %}
+      <tr>
+        <td>
+          <a href="{% url 'customer_detail' c.id %}" style="color:#ff7f50; text-decoration:none;">
+            {{ c.name }}
+          </a>
+        </td>
+        <td>{{ c.gender }}</td>
+        <td>{{ c.car }}</td>
+        <td>{{ c.date }}</td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.contact }}</td>
+        <td>{{ c.repair_status }}</td>
+        <td>{{ c.estimated_cost }}</td>
+        <td>
+          {% if c.photo %}
+            <img src="{{ c.photo.url }}" width="100">
+          {% else %}
+            No photo
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+  </div>
+
+</body>
+</html>

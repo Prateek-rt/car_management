@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Car - SmartAuto</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+    }
+
+    aside {
+      width: 250px;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      backdrop-filter: blur(8px);
+    }
+
+    aside div {
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff7f50;
+      margin-bottom: 20px;
+    }
+
+    aside input[type="text"] {
+      width: 90%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 13px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      outline: none;
+    }
+
+    aside a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
+    aside a.active,
+    aside a:hover {
+      color: #ff7f50;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 20px;
+      min-height: 100vh;
+    }
+
+    .form-box {
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 40px 30px;
+      width: 90%;
+      max-width: 600px;
+      margin: 0 auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      margin-bottom: 40px;
+    }
+
+    .form-box h2 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 28px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-size: 16px;
+      margin-bottom: 5px;
+      font-weight: 500;
+    }
+
+    input, select, textarea {
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      width: 100%;
+      outline: none;
+      backdrop-filter: blur(4px);
+      transition: border 0.3s, background 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: #ff7f50;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    input[type="file"] {
+      color: #fff;
+      border: none;
+      background: transparent;
+    }
+
+    .btn {
+      padding: 14px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background: #218838;
+    }
+
+    .back-link {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .back-link a {
+      color: #ff7f50;
+      text-decoration: none;
+      font-size: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #ccc;
+      font-size: 14px;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside>
+    <div>SmartAuto</div>
+    <form method="GET" action="#">
+      <input type="text" name="search" placeholder="Search..." />
+    </form>
+    <a href="{% url 'index' %}" style="color:{% if request.path == '/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Home</a>
+  <a href="{% url 'car_list' %}" style="color:{% if request.path == '/cars/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Cars</a>
+  <a href="{% url 'add_car' %}" style="color:{% if request.path == '/add_car/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Add Car</a>
+  <a href="{% url 'customer_list' %}" style="color:#fff; text-decoration:none; font-size:16px;">Customer List</a>
+  <a href="{% url 'add_customer' %}" style="color:{% if request.path == '/add_customer/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Add Customer</a>
+  <a href="#" style="color:#fff; text-decoration:none; font-size:16px;">Contact</a>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="form-box">
+      <h2>Add New Car</h2>
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% for field in form %}
+          <div>
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+              <div style="color:#ff6b6b; font-size:14px;">{{ field.errors }}</div>
+            {% endif %}
+          </div>
+        {% endfor %}
+        <button type="submit" class="btn">Save Car</button>
+      </form>
+      <div class="back-link">
+        <a href="{% url 'car_list' %}">← View Car List</a>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2025 SmartAuto Dealership. All rights reserved.
+    </footer>
+  </div>
+
+</body>
+</html>
