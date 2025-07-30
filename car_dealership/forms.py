@@ -6,7 +6,7 @@ from .models import Worker
 class CarForm(forms.ModelForm):
     class Meta:
         model = Car
-        fields = ['name', 'model', 'price', 'mileage', 'image']
+        fields = ['name', 'model', 'price', 'mileage', 'image','engine', 'transmission', 'fuel_type', 'seating_capacity', 'boot_space', 'warranty']
 
 class CustomerForm(forms.ModelForm):
     class Meta:

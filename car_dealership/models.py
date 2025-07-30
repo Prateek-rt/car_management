@@ -8,6 +8,12 @@ class Car(models.Model):
     price = models.CharField(max_length=20)
     mileage = models.CharField(max_length=20)
     image = models.ImageField(upload_to='car_images/')
+    engine = models.CharField(max_length=100, blank=True, null=True)
+    transmission = models.CharField(max_length=100, blank=True, null=True)
+    fuel_type = models.CharField(max_length=100, blank=True, null=True)
+    seating_capacity = models.CharField(max_length=100, blank=True, null=True)
+    boot_space = models.CharField(max_length=100, blank=True, null=True)
+    warranty = models.CharField(max_length=100, blank=True, null=True)
 
 class Customer(models.Model):
     GENDER_CHOICES = (
