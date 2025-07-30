@@ -171,7 +171,7 @@
       <a href="{% url 'add_car' %}" style="color: {% if request.path == '/add_car/' %}#ff7f50{% else %}#fff{% endif %};">Add Car</a>
       <a href="{% url 'customer_list' %}">Customer List</a>
       <a href="{% url 'add_customer' %}" style="color: {% if request.path == '/add_customer/' %}#ff7f50{% else %}#fff{% endif %};">Add Customer</a>
-      <a href="#">Contact</a>
+      <a href="{% url 'worker_list' %}" style="color:#fff; text-decoration:none; font-size:16px;">Workers</a>
     </aside>
 
     <!-- Main Content -->
@@ -186,7 +186,8 @@
           <p>Model: {{ car.model }}</p>
           <p>Price: {{ car.price }}</p>
           <p>Mileage: {{ car.mileage }}</p>
-          <a href="#" class="btn">View Details</a>
+          <a href="{% url 'car_detail' car.pk %}" class="btn">View Details</a>
+
         </div>
         {% endfor %}
       </div>

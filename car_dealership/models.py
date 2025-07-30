@@ -27,6 +27,14 @@ class Customer(models.Model):
     problem_description = models.TextField()
     estimated_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     repair_status = models.CharField(max_length=20, default='Pending')
-    
+
+class Worker(models.Model):
+    worker_id=models.CharField(max_length=100,default="WRK-001", unique=True)
+    name = models.CharField(max_length=100)
+    mobile_no = models.CharField(max_length=10)
+    email_id = models.EmailField()
+    address = models.TextField(blank=True)
+    position = models.CharField(max_length=100)
+
     def __str__(self):
         return self.name

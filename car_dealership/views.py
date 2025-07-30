@@ -6,7 +6,10 @@ from .models import Customer
 from django.shortcuts import render, get_object_or_404
 from .models import Customer
 from django.db.models import Q
-
+from django.http import JsonResponse
+from .models import Worker
+from .forms import WorkerForm
+from django.http import JsonResponse, Http404
 
 def index(request):
     return render(request, "car_dealership/index.html")
@@ -38,9 +41,14 @@ def add_customer(request):
         form = CustomerForm()
     return render(request, "car_dealership/add_customer.html", {"form": form})
 
+def car_detail(request, pk):
+    car = get_object_or_404(Car, pk=pk)
+    return render(request, 'car_dealership/car_details.html', {'car': car})
+
 def customer_list(request):
     customers = Customer.objects.all().order_by('-id')
     return render(request, "car_dealership/customer_list.html", {"customers": customers})
+
 
 def customer_list(request):
     customers = Customer.objects.all()
@@ -77,3 +85,27 @@ def edit_customer(request, customer_id):
         form = CustomerForm(instance=customer)
 
     return render(request, 'car_dealership/add_customer.html', {'form': form, 'editing': True})
+
+def worker_view(request):
+    form = WorkerForm()
+    workers = Worker.objects.all().order_by('-id')
+    return render(request, 'car_dealership/workers.html', {'form': form, 'workers': workers})
+
+def add_worker_ajax(request):
+    if request.method == 'POST':
+        form = WorkerForm(request.POST)
+        if form.is_valid():
+            worker = form.save()
+            return JsonResponse({
+                'status': 'success',
+                'worker': {
+                    'worker_id':Worker.worker_id,
+                    'name': worker.name,
+                    'mobile_no': worker.mobile_no,
+                    'email_id': worker.email_id,
+                    'position': worker.position
+                }
+            })
+        else:
+            return JsonResponse({'status': 'error', 'errors': form.errors}, status=400)
+
