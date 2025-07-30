@@ -12,7 +12,7 @@
     }
 
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: 0 auto;
       background: rgba(255, 255, 255, 0.05);
       padding: 30px;
@@ -34,12 +34,41 @@
       color: #ff7f50;
     }
 
+    h2 {
+      font-size: 24px;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      color: #f39c12;
+    }
+
     p {
       font-size: 18px;
       margin-bottom: 10px;
     }
 
-    .back-link {
+    ul {
+      list-style-type: disc;
+      margin-left: 20px;
+      font-size: 17px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: left;
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .back-link, .contact-btn {
       display: inline-block;
       margin-top: 20px;
       padding: 10px 20px;
@@ -47,10 +76,15 @@
       color: #fff;
       text-decoration: none;
       border-radius: 8px;
+      margin-right: 10px;
     }
 
-    .back-link:hover {
+    .back-link:hover, .contact-btn:hover {
       background: #e56c3d;
+    }
+
+    .section {
+      margin-bottom: 30px;
     }
   </style>
 </head>
@@ -61,7 +95,56 @@
     <p><strong>Model:</strong> {{ car.model }}</p>
     <p><strong>Price:</strong> {{ car.price }}</p>
     <p><strong>Mileage:</strong> {{ car.mileage }}</p>
+
+    <div class="section">
+      <h2>About This Car</h2>
+      <p>{{ car.description|default:"A great vehicle built with performance and comfort in mind. Check out the features below!" }}</p>
+    </div>
+
+    <div class="section">
+      <h2>Key Features</h2>
+      <ul>
+        <li>Power Steering</li>
+        <li>ABS with EBD</li>
+        <li>Touchscreen Display</li>
+        <li>Reverse Camera</li>
+        <li>Dual Airbags</li>
+        <li>Automatic Climate Control</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Specifications</h2>
+      <table>
+        <tr>
+          <th>Engine</th>
+          <td>{{ car.engine|default:"-" }}</td>
+        </tr>
+        <tr>
+          <th>Transmission</th>
+          <td>{{ car.transmission|default:"-" }}</td>
+        </tr>
+        <tr>
+          <th>Fuel Type</th>
+          <td>{{ car.fuel_type|default:"-" }}</td>
+        </tr>
+        <tr>
+          <th>Seating Capacity</th>
+          <td>{{ car.seating_capacity|default:"-" }}</td>
+        </tr>
+        <tr>
+          <th>Boot Space</th>
+          <td>{{ car.boot_space|default:"-" }}</td>
+        </tr>
+        <tr>
+          <th>Warranty</th>
+          <td>{{ car.warranty|default:"-" }}</td>
+        </tr>
+      </table>
+    </div>
+
     <a href="{% url 'car_list' %}" class="back-link">← Back to Listings</a>
+    <a href="tel:+1800123456" class="contact-btn">📞 Contact Dealer</a>
   </div>
 </body>
 </html>
