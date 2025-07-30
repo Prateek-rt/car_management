@@ -25,7 +25,7 @@
   <a href="{% url 'add_car' %}" style="color:{% if request.path == '/add_car/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Add Car</a>
   <a href="{% url 'customer_list' %}" style="color:#fff; text-decoration:none; font-size:16px;">Customer List</a>
   <a href="{% url 'add_customer' %}" style="color:{% if request.path == '/add_customer/' %}#ff7f50{% else %}#fff{% endif %}; text-decoration:none; font-size:16px;">Add Customer</a>
-  <a href="#" style="color:#fff; text-decoration:none; font-size:16px;">Contact</a>
+  <a href="{% url 'worker_list' %}" style="color:#fff; text-decoration:none; font-size:16px;">Workers</a>
 </aside>
 
 
